@@ -1,0 +1,14 @@
+[user]
+	name = fourdim
+	email = 59462000+fourdim@users.noreply.github.com
+	signingkey = 4FD56D8C605FC6F6!
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true

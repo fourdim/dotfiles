@@ -1,0 +1,12 @@
+{
+	"auths": {},
+	"proxies": {
+		"default": {
+			"httpProxy": "http://192.168.254.1:17992",
+			"httpsProxy": "http://192.168.254.1:17992"
+		}
+	},
+	"aliases": {
+		"builder": "buildx"
+	}
+}
