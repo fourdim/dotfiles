@@ -107,12 +107,20 @@ export GPG_TTY=$TTY
 # term
 export TERM=alacritty
 
+# vscode
+if command code-insiders -v > /dev/null; then
+    alias code=code-insiders
+fi
+
 # CMake
 export CMAKE_GENERATOR="Ninja"
 
 # Compiler
 export CC="clang"
 export CXX="clang++"
+
+# Electron
+export ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
 
 # fzf-tab
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
