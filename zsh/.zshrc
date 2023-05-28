@@ -108,7 +108,7 @@ export GPG_TTY=$TTY
 export TERM=alacritty
 
 # vscode
-if command code-insiders -v > /dev/null; then
+if command -v code-insiders > /dev/null; then
     alias code=code-insiders
 fi
 
