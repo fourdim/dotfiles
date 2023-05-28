@@ -126,6 +126,9 @@ yarn.pf \
 vscode-server.pf \
     ~/.vscode-server/data/Machine/ '*'
 
+vscode-server-insiders.pf \
+    ~/.vscode-server-insiders/data/Machine/ '*'
+
 docker.pf \
     ~/.docker 'config.json'
 
