@@ -4,6 +4,7 @@ export XDG_DATA_HOME=~/.local/share
 
 export EDITOR='vim'
 export VISUAL='vim'
+export BROWSER='chromium'
 
 export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
 
