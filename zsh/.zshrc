@@ -112,6 +112,11 @@ if command -v code-insiders > /dev/null; then
     alias code=code-insiders
 fi
 
+# nvim
+if command -v nvim > /dev/null; then
+    alias vim=nvim
+fi
+
 # CMake
 export CMAKE_GENERATOR="Ninja"
 

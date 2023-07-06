@@ -2,8 +2,8 @@ export XDG_CONFIG_HOME=~/.config
 export XDG_CACHE_HOME=~/.cache
 export XDG_DATA_HOME=~/.local/share
 
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='nvim'
+export VISUAL='nvim'
 export BROWSER='chromium'
 
 export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
