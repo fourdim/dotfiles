@@ -65,7 +65,7 @@ cute-dot-list()  { printf '%s\n' ${(ko)pf_map} }
 cute-dot-sync()  { _for-each-pf _sync $@ }
 cute-dot-apply() { _for-each-pf _apply $@ }
 
-# ------------------------------- Config Begin ------------------------------- #
+# =============================== Config Begin =============================== #
 
 rsync_opt=(
     '--recursive'
@@ -141,7 +141,7 @@ docker.pf \
 pkglist.pf \
     ~/.config 'pkglist.txt'
 
-# -------------------------------- Config End -------------------------------- #
+# ================================ Config End ================================ #
 
 cp /etc/pkglist.txt ~/.config
 cute-dot-$1 ${@:2}

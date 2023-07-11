@@ -81,7 +81,6 @@ open-vm-tools
 openbsd-netcat
 openmp
 openssh
-openssl-1.1
 pacman
 pacman-backup-hook
 pacman-contrib
@@ -105,7 +104,6 @@ tree
 ttf-meslo-nerd-font-powerlevel10k
 unzip
 valgrind
-vim
 wget
 which
 xf86-video-vesa
