@@ -11,6 +11,7 @@ export LESS='-R --use-color -Dd+r$Du+b'
 alias ls='ls --color=auto'
 alias cat='bat'
 export MANPAGER="sh -c 'col -bx | bat -l man -p --theme=\"Monokai Extended Bright\"'"
+export MANROFFOPT="-c"
 export BAT_THEME='Visual Studio Dark+'
 # export CUDAToolkit_ROOT='/opt/cuda'
 
