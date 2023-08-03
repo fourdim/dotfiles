@@ -15,6 +15,10 @@ export MANROFFOPT="-c"
 export BAT_THEME='Visual Studio Dark+'
 # export CUDAToolkit_ROOT='/opt/cuda'
 
+cleanup() {
+    find . -name "$1" -type d -prune -exec rm -r '{}' +
+}
+
 # >>> proxy >>>
 proxy() {
     export http_proxy="http://192.168.254.1:17992"
@@ -116,6 +120,12 @@ fi
 # nvim
 if command -v nvim > /dev/null; then
     alias vim=nvim
+fi
+
+if command -v code > /dev/null; then
+    alias zshrc='code ~/.config/zsh/.zshrc'
+else
+    alias zshrc='vim ~/.config/zsh/.zshrc'
 fi
 
 # CMake

@@ -8,6 +8,7 @@ base
 base-devel
 bat
 bc
+binaryen
 binutils
 bison
 bmake
@@ -48,7 +49,6 @@ gtk2
 gzip
 htop
 httpie
-jdk11-openjdk
 jq
 kde-system-meta
 lib32-gcc-libs
