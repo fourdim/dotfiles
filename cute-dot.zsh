@@ -123,8 +123,8 @@ pip.pf \
 go.pf \
     ~/.config/go '*'
 
-npm.pf \
-    ~ '.npmrc'
+# npm.pf \
+#     ~ '.npmrc'
 
 yarn.pf \
     ~ '.yarnrc.yml'
