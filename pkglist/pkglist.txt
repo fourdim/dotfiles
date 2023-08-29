@@ -29,6 +29,7 @@ expac
 fakeroot
 file
 findutils
+firefox
 flex
 fzf
 gawk
