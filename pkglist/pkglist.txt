@@ -14,6 +14,7 @@ bison
 bmake
 btrfs-progs
 candy-icons-git
+ccid
 chromium
 clang
 clinfo
@@ -55,6 +56,7 @@ kde-system-meta
 lib32-gcc-libs
 lib32-glibc
 libc++
+libfido2
 libtool
 linux
 linux-firmware

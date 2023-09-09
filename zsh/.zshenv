@@ -13,7 +13,6 @@ ZDOTDIR=$XDG_CONFIG_HOME/zsh
 typeset -U path  # set unique (fpath has been set unique)
 path=(
     $ZDOTDIR/scripts
-    /opt/mpich/bin
     ~/.local/bin
     ~/.cargo/bin
     ~/.yarn/bin

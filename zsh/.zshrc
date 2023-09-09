@@ -131,10 +131,6 @@ fi
 # CMake
 export CMAKE_GENERATOR="Ninja"
 
-# Compiler
-export CC="clang"
-export CXX="clang++"
-
 # Electron
 export ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
 
@@ -156,3 +152,5 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 precmd () { echo -n "\x1b]1337;CurrentDir=$(pwd)\x07" }
 
 [ -f "/home/fourdim/.ghcup/env" ] && source "/home/fourdim/.ghcup/env" # ghcup-env
+
+gpgconf --create-socketdir
