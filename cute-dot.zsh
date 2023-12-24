@@ -121,7 +121,7 @@ pip.pf \
 #     ~/.config/clangd '*'
 
 go.pf \
-    ~/.config/go '*'
+    ~/.config/go 'env'
 
 # npm.pf \
 #     ~ '.npmrc'

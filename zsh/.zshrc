@@ -13,6 +13,7 @@ alias cat='bat'
 export MANPAGER="sh -c 'col -bx | bat -l man -p --theme=\"Monokai Extended Bright\"'"
 export MANROFFOPT="-c"
 export BAT_THEME='Visual Studio Dark+'
+alias git-nosign="git -c commit.gpgsign=false"
 # export CUDAToolkit_ROOT='/opt/cuda'
 
 cleanup() {
@@ -30,6 +31,15 @@ unsetproxy() {
     unset https_proxy
 }
 # <<< proxy <<<
+
+ipv624() {
+    readonly port=${1:?"The port must be specified."}
+    socat TCP4-LISTEN:${port},fork TCP6:\[::\]:${port}
+}
+
+docker_prune_build_cache() {
+    docker buildx prune --filter=unused-for=120h
+}
 
 # zsh misc
 setopt auto_cd               # simply type dir name to cd
@@ -151,6 +161,8 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 precmd () { echo -n "\x1b]1337;CurrentDir=$(pwd)\x07" }
 
-[ -f "/home/fourdim/.ghcup/env" ] && source "/home/fourdim/.ghcup/env" # ghcup-env
-
 gpgconf --create-socketdir
+
+[ -f "/home/fourdim/.ghcup/env" ] && source "/home/fourdim/.ghcup/env" # ghcup-env
+# bun completions
+[ -s "/home/fourdim/.bun/_bun" ] && source "/home/fourdim/.bun/_bun"

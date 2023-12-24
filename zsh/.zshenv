@@ -16,6 +16,7 @@ path=(
     ~/.local/bin
     ~/.cargo/bin
     ~/.yarn/bin
+    ~/.bun/bin
     ~/go/bin
     $path
 )
