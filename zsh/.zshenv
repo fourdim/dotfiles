@@ -20,3 +20,4 @@ path=(
     ~/go/bin
     $path
 )
+

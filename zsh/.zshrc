@@ -18,6 +18,7 @@ alias git-nosign="git -c commit.gpgsign=false"
 
 cleanup() {
     find . -name "$1" -type d -prune -exec rm -r '{}' +
+    find . -name "$1" -type f -prune -exec rm '{}' +
 }
 
 # >>> proxy >>>
@@ -41,6 +42,13 @@ docker_prune_build_cache() {
     docker buildx prune --filter=unused-for=120h
 }
 
+bell() {
+    repeat ${1:-10} do
+        printf '\a';
+        sleep ${2:-0.5};
+    done
+}
+
 # zsh misc
 setopt auto_cd               # simply type dir name to cd
 setopt auto_pushd            # make cd behaves like pushd
@@ -50,6 +58,7 @@ setopt interactive_comments  # comments in interactive shells
 setopt multios               # multiple redirections
 setopt ksh_option_print      # make setopt output all options
 setopt extended_glob         # extended globbing
+unsetopt beep                # no beep
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'  # remove '/'
 
 # zsh history
@@ -166,3 +175,15 @@ gpgconf --create-socketdir
 [ -f "/home/fourdim/.ghcup/env" ] && source "/home/fourdim/.ghcup/env" # ghcup-env
 # bun completions
 [ -s "/home/fourdim/.bun/_bun" ] && source "/home/fourdim/.bun/_bun"
+
+# pnpm
+export PNPM_HOME="/home/fourdim/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
