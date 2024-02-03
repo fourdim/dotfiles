@@ -9,8 +9,9 @@ btrfs-progs
 ccid
 chromium
 clang
-cloudflared
+cloudflared-bin
 cmake
+cockpit-machines
 dbus-glib
 dhcpcd
 difftastic
@@ -25,6 +26,7 @@ dust
 efibootmgr
 fd
 fzf
+ghostscript
 git
 github-cli
 go
@@ -32,6 +34,7 @@ htop
 hyprland
 intel-media-driver
 inter-font
+iptables-nft
 iwd
 jq
 libfido2
@@ -66,10 +69,12 @@ rsync
 sddm
 socat
 tmux
+traceroute
 ttf-meslo-nerd
 ufw
 unzip
 vagrant
+virt-install
 vulkan-intel
 vulkan-radeon
 wget

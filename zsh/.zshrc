@@ -14,6 +14,8 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p --theme=\"Monokai Extended Brigh
 export MANROFFOPT="-c"
 export BAT_THEME='Visual Studio Dark+'
 alias git-nosign="git -c commit.gpgsign=false"
+alias dcup="docker-compose up"
+alias dcdown="docker-compose down --rmi local"
 # export CUDAToolkit_ROOT='/opt/cuda'
 
 cleanup() {
@@ -151,7 +153,10 @@ fi
 export CMAKE_GENERATOR="Ninja"
 
 # Electron
-export ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
+# export ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
+
+# libvirt
+export LIBVIRT_DEFAULT_URI="qemu:///system"
 
 # fzf-tab
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
@@ -187,3 +192,5 @@ esac
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
+[[ -d "/home/fourdim/.local/texlive/2023/bin/x86_64-linux" ]] && export PATH="/home/fourdim/.local/texlive/2023/bin/x86_64-linux:$PATH"
