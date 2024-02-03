@@ -1,7 +1,7 @@
 [user]
 	name = fourdim
-	email = 59462000+fourdim@users.noreply.github.com
-	signingkey = 8B356EA3BFF96626!
+	email = noreply@fourdim.xyz
+	signingkey = 78164CF06280D3B6!
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
