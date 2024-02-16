@@ -68,6 +68,8 @@ restic
 rsync
 sddm
 socat
+step-ca
+step-cli
 tmux
 traceroute
 ttf-meslo-nerd

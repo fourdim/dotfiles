@@ -13,7 +13,7 @@ alias cat='bat'
 export MANPAGER="sh -c 'col -bx | bat -l man -p --theme=\"Monokai Extended Bright\"'"
 export MANROFFOPT="-c"
 export BAT_THEME='Visual Studio Dark+'
-alias git-nosign="git -c commit.gpgsign=false"
+alias git-nosign="git config --local commit.gpgsign false"
 alias dcup="docker-compose up"
 alias dcdown="docker-compose down --rmi local"
 # export CUDAToolkit_ROOT='/opt/cuda'
@@ -131,7 +131,7 @@ export FZF_DEFAULT_OPTS='--ansi --height=60% --reverse --cycle --bind=tab:accept
 export GPG_TTY=$TTY
 
 # term
-export TERM=alacritty
+export TERM=alacritty > /dev/null 2>&1
 
 # vscode
 if command -v code-insiders > /dev/null; then
@@ -175,7 +175,7 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 precmd () { echo -n "\x1b]1337;CurrentDir=$(pwd)\x07" }
 
-gpgconf --create-socketdir
+gpgconf --create-socketdir > /dev/null 2>&1
 
 [ -f "/home/fourdim/.ghcup/env" ] && source "/home/fourdim/.ghcup/env" # ghcup-env
 # bun completions
@@ -190,7 +190,6 @@ esac
 # pnpm end
 
 export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(pyenv init -)"
 
 [[ -d "/home/fourdim/.local/texlive/2023/bin/x86_64-linux" ]] && export PATH="/home/fourdim/.local/texlive/2023/bin/x86_64-linux:$PATH"
