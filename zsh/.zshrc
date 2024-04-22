@@ -150,7 +150,7 @@ else
 fi
 
 # CMake
-export CMAKE_GENERATOR="Ninja"
+# export CMAKE_GENERATOR="Ninja"
 
 # Electron
 # export ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
@@ -193,3 +193,5 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(pyenv init -)"
 
 [[ -d "/home/fourdim/.local/texlive/2023/bin/x86_64-linux" ]] && export PATH="/home/fourdim/.local/texlive/2023/bin/x86_64-linux:$PATH"
+
+source ~/.config/zshrc.d/auto-Hypr.sh
