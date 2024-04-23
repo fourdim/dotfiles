@@ -97,6 +97,7 @@ pax-utils
 plasma-browser-integration
 playerctl
 polkit-gnome
+pre-commit
 pyenv
 python-build
 python-jinja

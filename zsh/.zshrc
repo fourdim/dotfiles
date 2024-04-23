@@ -4,10 +4,12 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 # <<< p10k instant prompt <<<
 
+bindkey '^a' beginning-of-line
+bindkey '^e' end-of-line
 alias diff='diff --color=auto'
 alias grep='grep --color=auto'
 alias ip='ip -color=auto'
-export LESS='-R --use-color -Dd+r$Du+b'
+export LESS='-Q -R --use-color -Dd+r$Du+b'
 alias ls='ls --color=auto'
 alias cat='bat'
 export MANPAGER="sh -c 'col -bx | bat -l man -p --theme=\"Monokai Extended Bright\"'"

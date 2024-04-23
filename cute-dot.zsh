@@ -50,10 +50,10 @@ hypr.pf ~/.config/hypr '*'
 alacritty.pf ~/.config/alacritty '*'
 yarn.pf ~ '.yarnrc.yml'
 vscode-server.pf ~/.vscode-server/data/Machine/ '*'
-pkglist.pf ~/.config 'pkglist.txt'
+
+sshd.rpf /etc/ssh 'sshd_config|moduli'
+pkglist.rpf /etc 'pkglist.txt'
 
 # ================================ Config End ================================ #
-
-cp /etc/pkglist.txt ~/.config
 
 cute-dot-$1 ${@:2}
