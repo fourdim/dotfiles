@@ -1,4 +1,7 @@
 {
     "terminal.integrated.fontFamily": "MesloLGS NF",
-    "terminal.integrated.enableBell": true
+    "accessibility.signals.terminalBell": {
+        "sound": "on"
+    },
+    "terminal.integrated.enableVisualBell": true
 }

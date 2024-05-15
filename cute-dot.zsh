@@ -38,8 +38,7 @@ rsync_opts=(
 )
 
 zsh.pf ~ '.zshenv'
-zsh.pf ~/.config/zsh '.zshrc|^*.zwc'
-p10k.pf ~/.config/zsh '.p10k.zsh'
+zsh.pf ~/.config/zsh '.zshrc|^*.zwc|.p10k.zsh'
 zshrcd.pf ~/.config/zshrc.d '*'
 gpg.pf ~/.gnupg 'gpg.conf|gpg-agent.conf'
 git.pf ~ '.gitconfig'

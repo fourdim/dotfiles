@@ -26,6 +26,7 @@ dbus-glib
 debootstrap
 dhcpcd
 difftastic
+direnv
 dnsmasq
 docker
 docker-buildx
@@ -42,6 +43,7 @@ fuzzel
 fzf
 ghostscript
 git
+git-absorb
 github-cli
 gjs
 gnome-bluetooth-3.0
@@ -60,6 +62,7 @@ htop
 hypridle-git
 hyprland-git
 hyprlock-git
+hyprpaper
 hyprpicker-git
 intel-media-driver
 inter-font
@@ -98,7 +101,6 @@ plasma-browser-integration
 playerctl
 polkit-gnome
 pre-commit
-pyenv
 python-build
 python-jinja
 python-materialyoucolor-git
@@ -124,6 +126,7 @@ step-ca
 step-cli
 swappy
 swww
+tealdeer
 tesseract
 tesseract-data-eng
 tinyxml2

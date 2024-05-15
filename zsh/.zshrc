@@ -1,3 +1,5 @@
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+
 # >>> p10k instant prompt >>>
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -17,7 +19,8 @@ export MANROFFOPT="-c"
 export BAT_THEME='Visual Studio Dark+'
 alias git-nosign="git config --local commit.gpgsign false"
 alias dcup="docker-compose up"
-alias dcdown="docker-compose down --rmi local"
+alias dcdown="docker-compose down --rmi local --remove-orphans"
+alias hyprunlock="pkill -USR1 hyprlock"
 # export CUDAToolkit_ROOT='/opt/cuda'
 
 cleanup() {
@@ -102,10 +105,10 @@ zinit wait="1" lucid for \
     OMZP::sudo/sudo.plugin.zsh \
     OMZP::extract/extract.plugin.zsh \
     OMZP::git/git.plugin.zsh
+    # OMZP::direnv/direnv.plugin.zsh
 
 zinit light fourdim/zsh-archlinux
 zinit light fourdim/zsh-pack
-zinit light fourdim/zsh-poetry
 
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
@@ -179,21 +182,22 @@ precmd () { echo -n "\x1b]1337;CurrentDir=$(pwd)\x07" }
 
 gpgconf --create-socketdir > /dev/null 2>&1
 
-[ -f "/home/fourdim/.ghcup/env" ] && source "/home/fourdim/.ghcup/env" # ghcup-env
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 # bun completions
-[ -s "/home/fourdim/.bun/_bun" ] && source "/home/fourdim/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # pnpm
-export PNPM_HOME="/home/fourdim/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(pyenv init -)"
+[[ -d "$HOME/.local/texlive/2023/bin/x86_64-linux" ]] && export PATH="$HOME/.local/texlive/2023/bin/x86_64-linux:$PATH"
 
-[[ -d "/home/fourdim/.local/texlive/2023/bin/x86_64-linux" ]] && export PATH="/home/fourdim/.local/texlive/2023/bin/x86_64-linux:$PATH"
+[[ -d "$HOME/.rye" ]] && source "$HOME/.rye/env"
+
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
 
 source ~/.config/zshrc.d/auto-Hypr.sh
