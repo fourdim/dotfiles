@@ -77,7 +77,13 @@ setopt share_history         # share history between sessions
 [ -z "$HISTFILE" ] && HISTFILE="$ZDOTDIR/.zsh_history"
 HISTSIZE=290000
 SAVEHIST=$HISTSIZE
-
+TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\n'\
+'avg shared (code):         %X KB'$'\n'\
+'avg unshared (data/stack): %D KB'$'\n'\
+'total (sum):               %K KB'$'\n'\
+'max memory:                %M MB'$'\n'\
+'page faults from disk:     %F'$'\n'\
+'other page faults:         %R'
 
 # >>> zinit >>>
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
