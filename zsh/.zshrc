@@ -18,6 +18,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p --theme=\"Monokai Extended Brigh
 export MANROFFOPT="-c"
 export BAT_THEME='Visual Studio Dark+'
 alias git-nosign="git config --local commit.gpgsign false"
+alias ssh-nocheck="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 alias dcup="docker-compose up"
 alias dcdown="docker-compose down --rmi local --remove-orphans"
 alias hyprunlock="pkill -USR1 hyprlock"
@@ -142,7 +143,7 @@ export FZF_DEFAULT_OPTS='--ansi --height=60% --reverse --cycle --bind=tab:accept
 export GPG_TTY=$TTY
 
 # term
-export TERM=alacritty > /dev/null 2>&1
+export TERM=xterm-256color > /dev/null 2>&1
 
 # vscode
 if command -v code-insiders > /dev/null; then
@@ -203,6 +204,8 @@ esac
 [[ -d "$HOME/.local/texlive/2023/bin/x86_64-linux" ]] && export PATH="$HOME/.local/texlive/2023/bin/x86_64-linux:$PATH"
 
 [[ -d "$HOME/.rye" ]] && source "$HOME/.rye/env"
+
+[[ -d "/opt/cuda" ]] && export CUDA_PATH="/opt/cuda" && export PATH="/opt/cuda/bin:$PATH"
 
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
 

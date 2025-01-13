@@ -4,5 +4,10 @@
         "sound": "on"
     },
     "terminal.integrated.enableVisualBell": true,
-    "clangd.path": "/home/fourdim/.vscode-server/data/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/18.1.3/clangd_18.1.3/bin/clangd"
+    "clangd.path": "/home/fourdim/.vscode-server/data/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/18.1.3/clangd_18.1.3/bin/clangd",
+    "editor.indentSize": "tabSize",
+    "editor.tabSize": 2,
+    "tinymist.formatterMode": "typstyle",
+    "nix.enableLanguageServer": true,
+    "editor.cursorStyle": "line-thin"
 }
