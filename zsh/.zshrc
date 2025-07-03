@@ -9,6 +9,7 @@ fi
 bindkey '^a' beginning-of-line
 bindkey '^e' end-of-line
 alias diff='diff --color=auto'
+alias rsync='rsync -avtpc'
 alias grep='grep --color=auto'
 alias ip='ip -color=auto'
 export LESS='-Q -R --use-color -Dd+r$Du+b'
@@ -22,6 +23,8 @@ alias ssh-nocheck="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/nu
 alias dcup="docker-compose up"
 alias dcdown="docker-compose down --rmi local --remove-orphans"
 alias hyprunlock="pkill -USR1 hyprlock"
+export MINISERVE_INTERFACE="127.0.0.1"
+alias ms="miniserve"
 # export CUDAToolkit_ROOT='/opt/cuda'
 
 cleanup() {
@@ -55,6 +58,14 @@ bell() {
         printf '\a';
         sleep ${2:-0.5};
     done
+}
+
+compress() {
+    mksquashfs ${1:-.} ${2:-${1:-out}.squashfs} -comp zstd -Xcompression-level 19 -b 1M
+}
+
+decompress() {
+    unsquashfs -d ${2:-.} ${1:-out.squashfs}
 }
 
 # zsh misc
@@ -169,6 +180,9 @@ fi
 
 # libvirt
 export LIBVIRT_DEFAULT_URI="qemu:///system"
+
+# podman
+export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
 
 # fzf-tab
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup

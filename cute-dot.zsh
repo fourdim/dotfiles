@@ -49,8 +49,9 @@ hypr.pf ~/.config/hypr '*'
 alacritty.pf ~/.config/alacritty '*'
 yarn.pf ~ '.yarnrc.yml'
 vscode-server.pf ~/.vscode-server/data/Machine/ '*'
+containers.pf ~/.config/containers '*'
 
-sshd.rpf /etc/ssh 'sshd_config|moduli'
+sshd.rpf /etc/ssh 'sshd_config'
 pkglist.rpf /etc 'pkglist.txt'
 
 # ================================ Config End ================================ #

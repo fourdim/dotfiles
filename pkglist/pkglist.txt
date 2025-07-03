@@ -1,8 +1,11 @@
+act
 adobe-source-han-serif-otc-fonts
+adobe-source-sans-fonts
 adw-gtk3-git
 alacritty
 amd-ucode
 anyrun-git
+argon2
 axel
 base
 base-devel
@@ -22,7 +25,6 @@ clang14
 cliphist
 cloudflared-bin
 cmake
-cockpit-machines
 cuda
 dart-sass
 dbus-glib
@@ -32,9 +34,6 @@ dhcpcd
 difftastic
 direnv
 dnsmasq
-docker
-docker-buildx
-docker-compose
 dolphin
 duf
 dunst
@@ -50,6 +49,7 @@ gammastep
 ghostscript
 git
 git-absorb
+git-filter-repo
 git-lfs
 github-cli
 gjs
@@ -72,6 +72,7 @@ intel-media-driver
 inter-font
 iptables-nft
 jq
+just
 libdbusmenu-gtk3
 libdwarf
 libfido2
@@ -85,6 +86,7 @@ llvm14
 lsof
 man-db
 man-pages
+maturin
 mesa
 meson
 miniserve
@@ -102,6 +104,8 @@ ntp
 openbsd-netcat
 openmp
 openssh
+otf-font-awesome
+otf-libertinus
 pacman-backup-hook
 pacman-contrib
 parallel
@@ -110,7 +114,11 @@ pax-utils
 plasma-browser-integration
 playerctl
 pnpm
+podman
+podman-compose
+podman-docker
 polkit-gnome
+postgresql-libs
 pre-commit
 python-build
 python-jinja
@@ -134,6 +142,7 @@ ruff
 rye
 slurp
 socat
+squashfs-tools
 starship
 step-ca
 step-cli
@@ -158,6 +167,7 @@ ttf-readex-pro
 ttf-roboto
 ttf-space-mono-nerd
 typescript
+typos
 typst
 ufw
 unzip
