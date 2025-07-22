@@ -1,13 +1,4 @@
 {
-    "terminal.integrated.fontFamily": "MesloLGS NF",
-    "accessibility.signals.terminalBell": {
-        "sound": "on"
-    },
-    "terminal.integrated.enableVisualBell": true,
-    "editor.indentSize": "tabSize",
-    "editor.tabSize": 2,
-    "tinymist.formatterMode": "typstyle",
-    "nix.enableLanguageServer": true,
-    "editor.cursorStyle": "line-thin",
-    "containers.containerClient": "com.microsoft.visualstudio.containers.podman"
+  "containers.containerClient": "com.microsoft.visualstudio.containers.podman",
+  "python.defaultInterpreterPath": "/bin/python"
 }

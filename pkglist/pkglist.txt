@@ -23,7 +23,7 @@ chromium
 clang
 clang14
 cliphist
-cloudflared-bin
+cloudflared
 cmake
 cuda
 dart-sass
@@ -71,6 +71,7 @@ inkscape
 intel-media-driver
 inter-font
 iptables-nft
+ipv6calc
 jq
 just
 libdbusmenu-gtk3
@@ -131,9 +132,12 @@ python-pywal
 python-pywayland
 python-setuptools-scm
 qemu-full
+qemu-user-static
+qemu-user-static-binfmt
 qt5-wayland
 qt5ct
 qt6-wayland
+radare2
 reflector
 restic
 ripgrep

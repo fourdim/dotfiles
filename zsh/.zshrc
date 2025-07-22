@@ -68,6 +68,13 @@ decompress() {
     unsquashfs -d ${2:-.} ${1:-out.squashfs}
 }
 
+mntsquashfs() {
+    local squashfs=${1:-out.squashfs}
+    local mountpoint=${2:-/mnt/squashfs}
+    mkdir -p "$mountpoint"
+    sudo mount -t squashfs -o loop "$squashfs" "$mountpoint"
+}
+
 # zsh misc
 setopt auto_cd               # simply type dir name to cd
 setopt auto_pushd            # make cd behaves like pushd
