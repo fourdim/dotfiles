@@ -14,7 +14,7 @@ alias grep='grep --color=auto'
 alias ip='ip -color=auto'
 export LESS='-Q -R --use-color -Dd+r$Du+b'
 alias ls='ls --color=auto'
-alias cat='bat'
+alias ll='ls -alhF'
 export MANPAGER="sh -c 'col -bx | bat -l man -p --theme=\"Monokai Extended Bright\"'"
 export MANROFFOPT="-c"
 export BAT_THEME='Visual Studio Dark+'
@@ -74,6 +74,12 @@ mntsquashfs() {
     mkdir -p "$mountpoint"
     sudo mount -t squashfs -o loop "$squashfs" "$mountpoint"
 }
+
+mktmpfs() {
+    mount -t tmpfs -o size=${1:-8G} tmpfs ${2:?"File system mount point must be specified."}
+}
+
+
 
 # zsh misc
 setopt auto_cd               # simply type dir name to cd
@@ -179,6 +185,31 @@ else
     alias zshrc='vim ~/.config/zsh/.zshrc'
 fi
 
+if command -v bat > /dev/null; then
+    alias cat='bat'
+fi
+
+if command -v bwrap > /dev/null; then
+    __bwrap() {
+        echo "Running $1 in bubblewrap sandbox..."
+        bwrap \
+            --ro-bind / / \
+            --tmpfs $HOME/.cache \
+            --bind $HOME/.claude $HOME/.claude \
+            --bind $HOME/.claude.json $HOME/.claude.json \
+            --bind $ZDOTDIR $ZDOTDIR \
+            --bind $PWD $PWD \
+            --tmpfs /tmp \
+            --proc /proc \
+            --dev /dev \
+            --dev-bind /dev/kvm /dev/kvm \
+            "$@"
+    }
+    claude() {
+        __bwrap claude "$@"
+    }
+fi
+
 # CMake
 # export CMAKE_GENERATOR="Ninja"
 
@@ -190,6 +221,9 @@ export LIBVIRT_DEFAULT_URI="qemu:///system"
 
 # podman
 export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+
+# direnv
+export DIRENV_WARN_TIMEOUT="-1s"
 
 # fzf-tab
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
@@ -224,10 +258,9 @@ esac
 
 [[ -d "$HOME/.local/texlive/2023/bin/x86_64-linux" ]] && export PATH="$HOME/.local/texlive/2023/bin/x86_64-linux:$PATH"
 
-[[ -d "$HOME/.rye" ]] && source "$HOME/.rye/env"
+[[ -d "$HOME/.elan/bin" ]] && export PATH="$HOME/.elan/bin:$PATH"
 
 [[ -d "/opt/cuda" ]] && export CUDA_PATH="/opt/cuda" && export PATH="/opt/cuda/bin:$PATH"
 
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
 
-source ~/.config/zshrc.d/auto-Hypr.sh

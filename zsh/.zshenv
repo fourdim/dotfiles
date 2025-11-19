@@ -15,6 +15,7 @@ path=(
     $ZDOTDIR/scripts
     ~/.local/bin
     ~/.cargo/bin
+    ~/.local/zig
     ~/.yarn/bin
     ~/.bun/bin
     ~/go/bin
