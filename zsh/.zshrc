@@ -158,11 +158,6 @@ export GPG_TTY=$TTY
 # term
 export TERM=xterm-256color > /dev/null 2>&1
 
-# vscode
-if command -v code-insiders > /dev/null; then
-    alias code=code-insiders
-fi
-
 # nvim
 if command -v nvim > /dev/null; then
     alias vim=nvim
@@ -178,32 +173,7 @@ if command -v bat > /dev/null; then
     alias cat='bat'
 fi
 
-if command -v bwrap > /dev/null; then
-    __bwrap() {
-        echo "Running $1 in bubblewrap sandbox..."
-        bwrap \
-            --ro-bind / / \
-            --tmpfs $HOME/.cache \
-            --tmpfs $HOME/go/pkg/mod/cache \
-            --tmpfs $HOME/.ssh \
-            --bind /dev/null "$HOME/.git-credentials" \
-            --bind-try /dev/null /usr/bin/distrobox-host-exec \
-            --bind-try $HOME/.cache/ms-playwright $HOME/.cache/ms-playwright \
-            --bind-try $HOME/.local/share/pnpm $HOME/.local/share/pnpm \
-            --bind-try $HOME/go $HOME/go \
-            --bind-try $HOME/.claude $HOME/.claude \
-            --bind-try $HOME/.claude.json $HOME/.claude.json \
-            --bind-try $ZDOTDIR $ZDOTDIR \
-            --bind $PWD $PWD \
-            --bind /run /run \
-            --tmpfs /tmp \
-            --proc /proc \
-            --dev /dev \
-            --dev-bind /dev/kvm /dev/kvm \
-            "$@"
-    }
-    alias claude='__bwrap claude'
-fi
+for f in $XDG_CONFIG_HOME/zshrc.d/*.zsh(N); source $f
 
 # tmux
 export TMUX_TMPDIR="/var/tmp"
