@@ -117,6 +117,12 @@ TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\n'\
 source ${ZDOTDIR}/zq.zsh
 # <<< zq <<<
 
+zq outdated 7 && {
+    zq update
+    { for file in ${ZDOTDIR}/{.zshrc,*.zsh}; zcompile $file; } &!
+}
+
+
 zq plug ohmyzsh/ohmyzsh lib/completion.zsh
 zq plug fourdim/zsh-archlinux
 zq plug fourdim/zsh-uv
