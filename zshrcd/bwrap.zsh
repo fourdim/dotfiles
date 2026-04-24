@@ -25,7 +25,7 @@ __bwrap() {
         --new-session \
         --die-with-parent \
         --hostname bwrap-sandbox \
-        "${BWRAP_EXTRA[@]}" \
+        ${BWRAP_EXTRA[@]} \
         "$@"
 }
 
@@ -33,6 +33,8 @@ __bwrap-claude() {
     local extras=(
         --bind-try "$HOME/.claude" "$HOME/.claude"
         --bind-try "$HOME/.claude.json" "$HOME/.claude.json"
+        --ro-bind-try "$HOME/.local/bin/claude" "$HOME/.local/bin/claude"
+        --ro-bind-try "$HOME/.local/share/claude" "$HOME/.local/share/claude"
         --ro-bind-try "$HOME/.config/nvm" "$HOME/.config/nvm"
         --bind-try "$HOME/.cache/ms-playwright" "$HOME/.cache/ms-playwright"
         --bind-try "$HOME/.local/share/pnpm" "$HOME/.local/share/pnpm"
