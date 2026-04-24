@@ -8,7 +8,7 @@ __bwrap() {
         --ro-bind /opt /opt \
         --ro-bind /var /var \
         --symlink usr/lib /lib \
-        --symlink usr/lib /lib64 \
+        --symlink usr/lib64 /lib64 \
         --symlink usr/bin /bin \
         --symlink usr/bin /sbin \
         --proc /proc \
