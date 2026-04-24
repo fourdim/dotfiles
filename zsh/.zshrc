@@ -113,51 +113,31 @@ TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\n'\
 'page faults from disk:     %F'$'\n'\
 'other page faults:         %R'
 
-# >>> zinit >>>
-if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
-    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
-        print -P "%F{33} %F{34}Installation successful.%f%b" || \
-        print -P "%F{160} The clone has failed.%f%b"
-fi
+# >>> zq >>>
+source ${ZDOTDIR}/zq.zsh
+# <<< zq <<<
 
-source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-# <<< zinit <<<
+zq plug ohmyzsh/ohmyzsh lib/completion.zsh
+zq plug fourdim/zsh-archlinux
+zq plug fourdim/zsh-uv
 
-zicompinit
+autoload -Uz compinit && compinit
 
-zinit light-mode for \
-    OMZL::completion.zsh
+zq plug ohmyzsh/ohmyzsh lib/clipboard.zsh
+zq plug ohmyzsh/ohmyzsh lib/git.zsh
+zq plug ohmyzsh/ohmyzsh plugins/systemd
+zq plug ohmyzsh/ohmyzsh plugins/sudo
+zq plug ohmyzsh/ohmyzsh plugins/extract
+zq plug ohmyzsh/ohmyzsh plugins/git
 
-zinit wait="1" lucid for \
-    OMZL::clipboard.zsh \
-    OMZL::git.zsh \
-    OMZP::systemd/systemd.plugin.zsh \
-    OMZP::sudo/sudo.plugin.zsh \
-    OMZP::extract/extract.plugin.zsh \
-    OMZP::git/git.plugin.zsh
-    # OMZP::direnv/direnv.plugin.zsh
+zq plug fourdim/zsh-pack
 
-zinit light fourdim/zsh-archlinux
-zinit light fourdim/zsh-pack
+zq plug zdharma-continuum/history-search-multi-word
 
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-    zdharma-continuum/zinit-annex-as-monitor \
-    zdharma-continuum/zinit-annex-bin-gem-node \
-    zdharma-continuum/zinit-annex-patch-dl \
-    zdharma-continuum/zinit-annex-rust \
-    zdharma-continuum/history-search-multi-word
+zq plug Aloxaf/fzf-tab
 
-zinit light Aloxaf/fzf-tab
-
-zinit light-mode for \
-    zsh-users/zsh-autosuggestions \
-    zdharma-continuum/fast-syntax-highlighting
+zq plug zsh-users/zsh-autosuggestions
+zq plug zdharma-continuum/fast-syntax-highlighting
 
 #nvm
 export NVM_DIR="$HOME/.config/nvm"
@@ -243,9 +223,7 @@ zstyle ':fzf-tab:complete:kill:argument-rest' fzf-flags '--preview-window=down:3
 zstyle ':fzf-tab:complete:kill:*' popup-pad 0 3
 
 
-### End of Zinit's installer chunk
-
-zinit ice depth=1; zinit light romkatv/powerlevel10k
+zq plug romkatv/powerlevel10k
 
 [[ ! -f ${ZDOTDIR}/.p10k.zsh ]] || source ${ZDOTDIR}/.p10k.zsh
 

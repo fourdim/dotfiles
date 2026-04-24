@@ -49,7 +49,7 @@ alacritty.pf ~/.config/alacritty '*'
 yarn.pf ~ '.yarnrc.yml'
 vscode-server.pf ~/.vscode-server/data/Machine/ '*'
 containers.pf ~/.config/containers '*'
-systemd-user.pf ~/.config/systemd/user '*'
+systemd.pf ~/.config/systemd '*'
 
 sshd.rpf /etc/ssh 'sshd_config'
 pkglist.rpf /etc 'pkglist.txt'
