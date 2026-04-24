@@ -6,6 +6,8 @@ alacritty
 amd-ucode
 anyrun-git
 argon2
+aria2
+awww
 axel
 base
 base-devel
@@ -48,6 +50,7 @@ efibootmgr
 fail2ban
 fd
 fish
+flatpak
 flite
 foot
 fuzzel
@@ -73,16 +76,18 @@ gtk-layer-shell
 gtkmm3
 gtksourceviewmm
 htop
+httpie
 hwloc
 hyperfine
 inkscape
 intel-media-driver
 inter-font
-iptables-nft
+iptables
 ipv6calc
 jdk-openjdk
 jq
 just
+kexec-tools
 lcov
 lib32-gcc-libs
 lib32-glibc
@@ -128,6 +133,8 @@ pahole
 parallel
 pavucontrol
 pax-utils
+perl-authen-sasl
+perl-io-socket-ssl
 plasma-browser-integration
 playerctl
 pnpm
@@ -168,7 +175,6 @@ step-ca
 step-cli
 strace
 swappy
-swww
 tcpdump
 tcping-go
 tealdeer

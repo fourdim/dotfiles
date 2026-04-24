@@ -1,3 +1,6 @@
+# direnv
+export DIRENV_WARN_TIMEOUT="30s"
+
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
 
 # >>> p10k instant prompt >>>
@@ -20,8 +23,8 @@ export MANROFFOPT="-c"
 export BAT_THEME='Visual Studio Dark+'
 alias git-nosign="git config --local commit.gpgsign false"
 alias ssh-nocheck="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-alias dcup="docker-compose up"
-alias dcdown="docker-compose down --rmi local --remove-orphans"
+alias dcup="docker compose up"
+alias dcdown="docker compose down --rmi local --remove-orphans"
 alias hyprunlock="pkill -USR1 hyprlock"
 export MINISERVE_INTERFACE="127.0.0.1"
 alias ms="miniserve"
@@ -195,20 +198,29 @@ if command -v bwrap > /dev/null; then
         bwrap \
             --ro-bind / / \
             --tmpfs $HOME/.cache \
-            --bind $HOME/.claude $HOME/.claude \
-            --bind $HOME/.claude.json $HOME/.claude.json \
-            --bind $ZDOTDIR $ZDOTDIR \
+            --tmpfs $HOME/go/pkg/mod/cache \
+            --tmpfs $HOME/.ssh \
+            --bind /dev/null "$HOME/.git-credentials" \
+            --bind-try /dev/null /usr/bin/distrobox-host-exec \
+            --bind-try $HOME/.cache/ms-playwright $HOME/.cache/ms-playwright \
+            --bind-try $HOME/.local/share/pnpm $HOME/.local/share/pnpm \
+            --bind-try $HOME/go $HOME/go \
+            --bind-try $HOME/.claude $HOME/.claude \
+            --bind-try $HOME/.claude.json $HOME/.claude.json \
+            --bind-try $ZDOTDIR $ZDOTDIR \
             --bind $PWD $PWD \
+            --bind /run /run \
             --tmpfs /tmp \
             --proc /proc \
             --dev /dev \
             --dev-bind /dev/kvm /dev/kvm \
             "$@"
     }
-    claude() {
-        __bwrap claude "$@"
-    }
+    alias claude='__bwrap claude'
 fi
+
+# tmux
+export TMUX_TMPDIR="/var/tmp"
 
 # CMake
 # export CMAKE_GENERATOR="Ninja"
@@ -221,9 +233,6 @@ export LIBVIRT_DEFAULT_URI="qemu:///system"
 
 # podman
 export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-
-# direnv
-export DIRENV_WARN_TIMEOUT="-1s"
 
 # fzf-tab
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
