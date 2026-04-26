@@ -129,6 +129,7 @@ zq plug fourdim/zsh-uv
 
 autoload -Uz compinit && compinit
 
+zq plug QuarticCat/zsh-smartcache
 zq plug ohmyzsh/ohmyzsh lib/clipboard.zsh
 zq plug ohmyzsh/ohmyzsh lib/git.zsh
 zq plug ohmyzsh/ohmyzsh plugins/systemd

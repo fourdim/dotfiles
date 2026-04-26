@@ -38,6 +38,8 @@ __bwrap-claude() {
         --ro-bind-try "$HOME/.config/nvm" "$HOME/.config/nvm"
         --bind-try "$HOME/.cache/ms-playwright" "$HOME/.cache/ms-playwright"
         --bind-try "$HOME/.local/share/pnpm" "$HOME/.local/share/pnpm"
+        --bind-try "$HOME/.local/share/uv" "$HOME/.local/share/uv"
+        --bind-try "$HOME/.local/bin" "$HOME/.local/bin"
         --bind-try "$HOME/go" "$HOME/go"
     )
     local d
