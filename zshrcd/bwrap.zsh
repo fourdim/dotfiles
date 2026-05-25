@@ -93,3 +93,5 @@ bind-try:$HOME/.cargo:$HOME/.cargo
 
     BWRAP_EXTRA="${BWRAP_EXTRA:-} $claude_extra" __bwrap "$@"
 }
+
+alias claude="__bwrap-claude claude"
