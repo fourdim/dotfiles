@@ -95,3 +95,4 @@ bind-try:$HOME/.cargo:$HOME/.cargo
 }
 
 alias claude="__bwrap-claude claude"
+alias tgclaude="__bwrap-claude claude --channels plugin:telegram@claude-plugins-official"

@@ -4,28 +4,27 @@ DOT=${0:a:h}  # the directory of this script
 
 declare -A pf_map
 
-_add-pf() { pf_map[${2%.*}]+="$1 $3 $4 " }
-alias -s pf="_add-pf $USER"
+_add-pf() { pf_map[${2%.*}]+="$1 $3 $4 "; }
+alias -s pf="_add-pf self"
 alias -s rpf="_add-pf root"
 
-_rsync-pf() {  # ←|→ <pf-name>
+_rsync-pf() {  # sync|apply <pf-name>
     setopt extended_glob
-    for own loc pat in $=pf_map[$2]; case $1@$own {
-        (←@*)          rsync $rsync_opts -R $loc/./$~pat $DOT/$2/ ;;
-        (→@$USER)      rsync $rsync_opts -R $DOT/$2/./$~pat $loc/ ;;
-        (→@root)  sudo rsync $rsync_opts -R $DOT/$2/./$~pat $loc/ ;;
-    }
+    local output=$(for own loc pat in $=pf_map[$2]; case $1-$own {
+        (sync-*)          rsync $rsync_opts -R $loc/./$~pat $DOT/$2/ ;;
+        (apply-self)      rsync $rsync_opts -R $DOT/$2/./$~pat $loc/ ;;
+        (apply-root) sudo rsync $rsync_opts -R $DOT/$2/./$~pat $loc/ ;;
+    })
+    [[ $output == '' ]] || printf "\e[1m\e[33m$2\e[0m\n$output\n"
 }
 
-_rsync-each-pf() {  # ←|→ [--all|<pf-name>...]
+_rsync-each-pf() {  # sync|apply [--all|<pf-name>...]
     [[ $2 == --all ]] && set -- $1 ${(k)pf_map}
-    source env_parallel.zsh
-    sudo true  # refresh cache
-    env_parallel --ctag "_rsync-pf $1" ::: ${@:2}
+    [[ $1 == apply ]] && sudo -v
+    autoload -Uz zargs
+    # FIXME: Weird 123 return code on macOS, could be a zargs bug.
+    zargs -P0 -l1 -r -- ${@:2} -- _rsync-pf $1
 }
-
-cute-dot-sync()  { _rsync-each-pf ← $@ }
-cute-dot-apply() { _rsync-each-pf → $@ }
 
 # =============================== Config Begin =============================== #
 
@@ -49,11 +48,10 @@ alacritty.pf ~/.config/alacritty '*'
 yarn.pf ~ '.yarnrc.yml'
 vscode-server.pf ~/.vscode-server/data/Machine/ '*'
 containers.pf ~/.config/containers '*'
-systemd.pf ~/.config/systemd '*'
 
 sshd.rpf /etc/ssh 'sshd_config'
 pkglist.rpf /etc 'pkglist.txt'
 
 # ================================ Config End ================================ #
 
-cute-dot-$1 ${@:2}
+_rsync-each-pf $@
