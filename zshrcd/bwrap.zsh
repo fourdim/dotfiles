@@ -29,7 +29,6 @@ __bwrap() {
         --bind "$PWD" "$PWD"
 
         --ro-bind-try "$ZDOTDIR" "$ZDOTDIR"
-        --bind-try /dev/null /usr/bin/distrobox-host-exec
 
         --cap-add CAP_SYS_PTRACE
         --unshare-all --share-net
@@ -75,12 +74,10 @@ fi
     bwrap "${args[@]}" "$@"
 }
 
-__bwrap-claude() {
-    local claude_extra="
-bind-try:$HOME/.claude:$HOME/.claude
-bind-try:$HOME/.claude.json:$HOME/.claude.json
-ro-try:$HOME/.local/bin/claude:$HOME/.local/bin/claude
-ro-try:$HOME/.local/share/claude:$HOME/.local/share/claude
+# ---------------- coding agents ----------------
+
+# Dev toolchain shared by every coding agent in the sandbox.
+__bwrap_toolchain="
 ro-try:$HOME/.config/nvm:$HOME/.config/nvm
 bind-try:$HOME/.cache/ms-playwright:$HOME/.cache/ms-playwright
 bind-try:$HOME/.local/share/pnpm:$HOME/.local/share/pnpm
@@ -89,10 +86,31 @@ bind-try:$HOME/flutter:$HOME/flutter
 bind-try:$HOME/.local/bin:$HOME/.local/bin
 bind-try:$HOME/go:$HOME/go
 bind-try:$HOME/.cargo:$HOME/.cargo
+bind-try:$HOME/.rustup:$HOME/.rustup
 "
 
-    BWRAP_EXTRA="${BWRAP_EXTRA:-} $claude_extra" __bwrap "$@"
+# Per-agent state: config + binary + data, keyed by agent name.
+typeset -gA __bwrap_agents
+__bwrap_agents[claude]="
+bind-try:$HOME/.claude:$HOME/.claude
+bind-try:$HOME/.claude.json:$HOME/.claude.json
+ro-try:$HOME/.local/bin/claude:$HOME/.local/bin/claude
+ro-try:$HOME/.local/share/claude:$HOME/.local/share/claude
+"
+__bwrap_agents[codebuddy]="
+bind-try:$HOME/.codebuddy:$HOME/.codebuddy
+ro-try:$HOME/.local/bin/codebuddy:$HOME/.local/bin/codebuddy
+ro-try:$HOME/.local/share/codebuddy:$HOME/.local/share/codebuddy
+"
+
+# __bwrap-agent <name> [args...] — run an agent's binary in the sandbox with
+# the shared toolchain plus its own state bound in.
+__bwrap-agent() {
+    local name="$1"; shift
+    BWRAP_EXTRA="${BWRAP_EXTRA:-}
+${__bwrap_toolchain}
+${__bwrap_agents[$name]}" __bwrap "$name" "$@"
 }
 
-alias claude="__bwrap-claude claude"
-alias tgclaude="__bwrap-claude claude --channels plugin:telegram@claude-plugins-official"
+alias claude="__bwrap-agent claude"
+alias codebuddy="__bwrap-agent codebuddy"
