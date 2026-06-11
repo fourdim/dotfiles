@@ -63,6 +63,10 @@ if [[ -n "$BWRAP_EXTRA" ]]; then
             ro-try)
                 args+=( --ro-bind-try "$src" "$dst" )
                 ;;
+            mask)
+                 # Bind only if dst exists -- /dev/null as a universal black hole.
+                [[ -e "$dst" ]] && args+=( --bind "$src" "$dst" )
+                ;;
             tmpfs)
                 args+=( --tmpfs "$src" )
                 ;;
@@ -70,6 +74,10 @@ if [[ -n "$BWRAP_EXTRA" ]]; then
 
     done <<< "$BWRAP_EXTRA"
 fi
+
+    if [[ -n "$BWRAP_DEBUG" ]]; then
+        print -r -- "bwrap ${args[*]} $*"
+    fi
 
     bwrap "${args[@]}" "$@"
 }
@@ -94,13 +102,12 @@ typeset -gA __bwrap_agents
 __bwrap_agents[claude]="
 bind-try:$HOME/.claude:$HOME/.claude
 bind-try:$HOME/.claude.json:$HOME/.claude.json
-ro-try:$HOME/.local/bin/claude:$HOME/.local/bin/claude
 ro-try:$HOME/.local/share/claude:$HOME/.local/share/claude
 "
 __bwrap_agents[codebuddy]="
 bind-try:$HOME/.codebuddy:$HOME/.codebuddy
-ro-try:$HOME/.local/bin/codebuddy:$HOME/.local/bin/codebuddy
 ro-try:$HOME/.local/share/codebuddy:$HOME/.local/share/codebuddy
+ro-try:$HOME/.local/share/CodeBuddyExtension:$HOME/.local/share/CodeBuddyExtension
 "
 
 # __bwrap-agent <name> [args...] — run an agent's binary in the sandbox with
