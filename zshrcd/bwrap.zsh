@@ -92,6 +92,7 @@ bind-try:$HOME/.local/share/pnpm:$HOME/.local/share/pnpm
 bind-try:$HOME/.local/share/uv:$HOME/.local/share/uv
 bind-try:$HOME/flutter:$HOME/flutter
 bind-try:$HOME/.local/bin:$HOME/.local/bin
+bind-try:$HOME/.bun:$HOME/.bun
 bind-try:$HOME/go:$HOME/go
 bind-try:$HOME/.cargo:$HOME/.cargo
 bind-try:$HOME/.rustup:$HOME/.rustup
@@ -120,4 +121,5 @@ ${__bwrap_agents[$name]}" __bwrap "$name" "$@"
 }
 
 alias claude="__bwrap-agent claude"
+alias tgclaude="__bwrap-agent claude --channels plugin:telegram@claude-plugins-official"
 alias codebuddy="__bwrap-agent codebuddy"
