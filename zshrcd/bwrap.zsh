@@ -11,6 +11,7 @@ __bwrap() {
         --ro-bind /etc /etc
         --ro-bind /opt /opt
         --ro-bind /var /var
+        --tmpfs /var/tmp
 
         --symlink usr/lib /lib
         --symlink usr/lib64 /lib64
