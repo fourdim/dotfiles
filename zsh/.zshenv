@@ -19,6 +19,6 @@ path=(
     ~/.yarn/bin
     ~/.bun/bin
     ~/go/bin
+    ~/flutter/bin
     $path
 )
-

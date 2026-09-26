@@ -87,6 +87,7 @@ fi
 
 # Dev toolchain shared by every coding agent in the sandbox.
 __bwrap_toolchain="
+ro-try:$HOME/.agents/skills:$HOME/.agents/skills
 ro-try:$HOME/.config/nvm:$HOME/.config/nvm
 bind-try:$HOME/.cache/ms-playwright:$HOME/.cache/ms-playwright
 bind-try:$HOME/.local/share/pnpm:$HOME/.local/share/pnpm
@@ -112,6 +113,10 @@ ro-try:$HOME/.local/share/codebuddy:$HOME/.local/share/codebuddy
 ro-try:$HOME/.local/share/CodeBuddyExtension:$HOME/.local/share/CodeBuddyExtension
 "
 
+__bwrap_agents[codex]="
+bind-try:$HOME/.codex:$HOME/.codex
+"
+
 # __bwrap-agent <name> [args...] — run an agent's binary in the sandbox with
 # the shared toolchain plus its own state bound in.
 __bwrap-agent() {
@@ -124,3 +129,4 @@ ${__bwrap_agents[$name]}" __bwrap "$name" "$@"
 alias claude="__bwrap-agent claude"
 alias tgclaude="__bwrap-agent claude --channels plugin:telegram@claude-plugins-official"
 alias codebuddy="__bwrap-agent codebuddy"
+alias codex="__bwrap-agent codex"
