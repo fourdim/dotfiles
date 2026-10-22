@@ -19,8 +19,10 @@ __bwrap() {
         --symlink usr/bin /sbin
 
         --proc /proc
+        --bind /sys/fs/cgroup /sys/fs/cgroup
         --dev /dev
         --dev-bind-try /dev/kvm /dev/kvm
+        --dev-bind-try /dev/net/tun /dev/net/tun
 
         --tmpfs /tmp
         --tmpfs /run
@@ -31,8 +33,8 @@ __bwrap() {
 
         --ro-bind-try "$ZDOTDIR" "$ZDOTDIR"
 
-        --cap-add CAP_SYS_PTRACE
-        --unshare-all --share-net
+#        --cap-add CAP_SYS_PTRACE
+        --unshare-user --unshare-ipc --unshare-pid --unshare-uts --share-net
         --new-session
         --die-with-parent
         --hostname bwrap-sandbox
@@ -76,11 +78,22 @@ if [[ -n "$BWRAP_EXTRA" ]]; then
     done <<< "$BWRAP_EXTRA"
 fi
 
+    # Run in its own delegated cgroup scope so the sandbox can manage
+    # sub-cgroups under /sys/fs/cgroup. DelegateSubgroup= only applies to
+    # services, so move into the "agent" leaf by hand before exec'ing bwrap;
+    # this keeps the scope root free of processes. The user manager also
+    # doesn't write the user.delegate marker on scopes, so set it here.
+    # Fails closed if any step doesn't work.
+    local scope=(systemd-run --user --scope --quiet -p Delegate=yes)
+    local enter='cg=/sys/fs/cgroup$(sed -n "s/^0:://p" /proc/self/cgroup)
+setfattr -n user.delegate -v 1 "$cg" &&
+mkdir -p "$cg/agent" && echo 0 > "$cg/agent/cgroup.procs" && exec "$@"'
+
     if [[ -n "$BWRAP_DEBUG" ]]; then
-        print -r -- "bwrap ${args[*]} $*"
+        print -r -- "${scope[*]} sh -c <enter agent> bwrap ${args[*]} $*"
     fi
 
-    bwrap "${args[@]}" "$@"
+    "${scope[@]}" sh -c "$enter" sh bwrap "${args[@]}" "$@"
 }
 
 # ---------------- coding agents ----------------
