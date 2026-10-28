@@ -57,7 +57,8 @@ __bwrap() {
     )
 
     # ---------------- structured parsing ----------------
-    # One "mode:src:dst" per line.
+    # One "mode:src:dst" per line. dir/json create a missing src first so
+    # state written in the sandbox is never lost to the tmpfs /home.
     local line mode rest src dst
     while IFS= read -r line; do
         [[ -z "$line" ]] && continue
@@ -75,6 +76,14 @@ __bwrap() {
             bind-try)
                 args+=( --bind-try "$src" "$dst" )
                 ;;
+            dir)
+                mkdir -p -- "$src" || return
+                args+=( --bind "$src" "$dst" )
+                ;;
+            json)
+                [[ -e "$src" ]] || print -r -- '{}' > "$src" || return
+                args+=( --bind "$src" "$dst" )
+                ;;
             ro)
                 args+=( --ro-bind "$src" "$dst" )
                 ;;
@@ -87,6 +96,9 @@ __bwrap() {
                 ;;
             tmpfs)
                 args+=( --tmpfs "$src" )
+                ;;
+            setenv)
+                args+=( --setenv "$src" "$dst" )
                 ;;
         esac
     done <<< "${__bwrap_spec-}
@@ -133,20 +145,32 @@ bind-try:$HOME/.rustup:$HOME/.rustup
 
 # Per-agent state: config + binary + data, keyed by agent name.
 typeset -gA __bwrap_agents
+# Binary to run for an agent, when it differs from the agent name.
+typeset -gA __bwrap_bins
+
 __bwrap_agents[claude]="
-bind-try:$HOME/.claude:$HOME/.claude
-bind-try:$HOME/.claude.json:$HOME/.claude.json
+dir:$HOME/.claude:$HOME/.claude
+json:$HOME/.claude.json:$HOME/.claude.json
 ro-try:$HOME/.local/share/claude:$HOME/.local/share/claude
 "
 
+# Second Claude account; CLAUDE_CONFIG_DIR keeps .claude.json and
+# .credentials.json inside the config dir, so one mount covers it.
+__bwrap_agents[claudew]="
+dir:$HOME/.claude-work:$HOME/.claude-work
+setenv:CLAUDE_CONFIG_DIR:$HOME/.claude-work
+ro-try:$HOME/.local/share/claude:$HOME/.local/share/claude
+"
+__bwrap_bins[claudew]=claude
+
 __bwrap_agents[codebuddy]="
-bind-try:$HOME/.codebuddy:$HOME/.codebuddy
+dir:$HOME/.codebuddy:$HOME/.codebuddy
 ro-try:$HOME/.local/share/codebuddy:$HOME/.local/share/codebuddy
 ro-try:$HOME/.local/share/CodeBuddyExtension:$HOME/.local/share/CodeBuddyExtension
 "
 
 __bwrap_agents[codex]="
-bind-try:$HOME/.codex:$HOME/.codex
+dir:$HOME/.codex:$HOME/.codex
 "
 
 # __bwrap-agent <name> [args...] — run an agent's binary in the sandbox with
@@ -155,10 +179,11 @@ __bwrap-agent() {
     local name="$1"; shift
     local __bwrap_spec="${__bwrap_toolchain}
 ${__bwrap_agents[$name]}"
-    __bwrap "$name" "$@"
+    __bwrap "${__bwrap_bins[$name]:-$name}" "$@"
 }
 
 alias claude="__bwrap-agent claude"
+alias claudew="__bwrap-agent claudew"
 alias tgclaude="__bwrap-agent claude --channels plugin:telegram@claude-plugins-official"
 alias codebuddy="__bwrap-agent codebuddy"
 alias codex="__bwrap-agent codex"
