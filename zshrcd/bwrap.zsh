@@ -1,7 +1,23 @@
 command -v bwrap > /dev/null || return
 
+# True when a systemd user manager owns our cgroup and is reachable, i.e. we
+# can get a delegated scope from it.
+__bwrap-can-delegate() {
+    [[ "$(</proc/self/cgroup)" == 0::/user.slice/*/user@<->.service/* ]] &&
+        systemctl --user show-environment &> /dev/null
+}
+
+# __bwrap <cmd> [args...] — run <cmd> in the sandbox. Extra mounts come from
+# $__bwrap_spec (set by __bwrap-agent) followed by the user's $BWRAP_EXTRA,
+# so user overrides are applied last and win.
 __bwrap() {
-    echo "Running $1 in bubblewrap sandbox..."
+    print -u2 -r -- "Running $1 in bubblewrap sandbox..."
+
+    # Refuse to expose $HOME (or / or /home) wholesale via the $PWD bind.
+    if [[ "$PWD" == / || "$HOME" == "$PWD" || "$HOME" == "$PWD"/* ]]; then
+        print -u2 -r -- "bwrap: refusing to bind $PWD; cd into a project directory first"
+        return 1
+    fi
 
     local args=()
 
@@ -19,7 +35,6 @@ __bwrap() {
         --symlink usr/bin /sbin
 
         --proc /proc
-        --bind /sys/fs/cgroup /sys/fs/cgroup
         --dev /dev
         --dev-bind-try /dev/kvm /dev/kvm
         --dev-bind-try /dev/net/tun /dev/net/tun
@@ -38,12 +53,12 @@ __bwrap() {
         --new-session
         --die-with-parent
         --hostname bwrap-sandbox
+        --unsetenv BWRAP_EXTRA
     )
 
     # ---------------- structured parsing ----------------
-if [[ -n "$BWRAP_EXTRA" ]]; then
-    local line mode src dst
-
+    # One "mode:src:dst" per line.
+    local line mode rest src dst
     while IFS= read -r line; do
         [[ -z "$line" ]] && continue
 
@@ -74,26 +89,29 @@ if [[ -n "$BWRAP_EXTRA" ]]; then
                 args+=( --tmpfs "$src" )
                 ;;
         esac
+    done <<< "${__bwrap_spec-}
+${BWRAP_EXTRA-}"
 
-    done <<< "$BWRAP_EXTRA"
-fi
-
-    # Run in its own delegated cgroup scope so the sandbox can manage
-    # sub-cgroups under /sys/fs/cgroup. DelegateSubgroup= only applies to
-    # services, so move into the "agent" leaf by hand before exec'ing bwrap;
-    # this keeps the scope root free of processes. The user manager also
-    # doesn't write the user.delegate marker on scopes, so set it here.
-    # Fails closed if any step doesn't work.
-    local scope=(systemd-run --user --scope --quiet -p Delegate=yes)
-    local enter='cg=/sys/fs/cgroup$(sed -n "s/^0:://p" /proc/self/cgroup)
+    local runner=()
+    if __bwrap-can-delegate; then
+        # Run in its own delegated cgroup scope so the sandbox can manage
+        # sub-cgroups. DelegateSubgroup= only applies to services, so move
+        # into the "agent" leaf by hand before exec'ing bwrap; this keeps the
+        # scope root free of processes. The user manager also doesn't write
+        # the user.delegate marker on scopes, so set it here. Only the scope
+        # is mounted, at its real path, so /proc/self/cgroup still resolves
+        # and the rest of the host cgroup tree stays out of reach.
+        # Fails closed if any step doesn't work.
+        local enter='cg=/sys/fs/cgroup$(sed -n "s/^0:://p" /proc/self/cgroup)
 setfattr -n user.delegate -v 1 "$cg" &&
-mkdir -p "$cg/agent" && echo 0 > "$cg/agent/cgroup.procs" && exec "$@"'
-
-    if [[ -n "$BWRAP_DEBUG" ]]; then
-        print -r -- "${scope[*]} sh -c <enter agent> bwrap ${args[*]} $*"
+mkdir -p "$cg/agent" && echo 0 > "$cg/agent/cgroup.procs" &&
+b=$1 && shift && exec "$b" --bind "$cg" "$cg" "$@"'
+        runner=(systemd-run --user --scope --quiet -p Delegate=yes sh -c "$enter" sh)
     fi
 
-    "${scope[@]}" sh -c "$enter" sh bwrap "${args[@]}" "$@"
+    [[ -n "$BWRAP_DEBUG" ]] && print -u2 -r -- "${runner[*]} bwrap ${args[*]} $*"
+
+    "${runner[@]}" bwrap "${args[@]}" "$@"
 }
 
 # ---------------- coding agents ----------------
@@ -120,6 +138,7 @@ bind-try:$HOME/.claude:$HOME/.claude
 bind-try:$HOME/.claude.json:$HOME/.claude.json
 ro-try:$HOME/.local/share/claude:$HOME/.local/share/claude
 "
+
 __bwrap_agents[codebuddy]="
 bind-try:$HOME/.codebuddy:$HOME/.codebuddy
 ro-try:$HOME/.local/share/codebuddy:$HOME/.local/share/codebuddy
@@ -134,9 +153,9 @@ bind-try:$HOME/.codex:$HOME/.codex
 # the shared toolchain plus its own state bound in.
 __bwrap-agent() {
     local name="$1"; shift
-    BWRAP_EXTRA="${BWRAP_EXTRA:-}
-${__bwrap_toolchain}
-${__bwrap_agents[$name]}" __bwrap "$name" "$@"
+    local __bwrap_spec="${__bwrap_toolchain}
+${__bwrap_agents[$name]}"
+    __bwrap "$name" "$@"
 }
 
 alias claude="__bwrap-agent claude"
