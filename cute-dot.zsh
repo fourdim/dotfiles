@@ -20,7 +20,12 @@ _rsync-pf() {  # sync|apply <pf-name>
 
 _rsync-each-pf() {  # sync|apply [--all|<pf-name>...]
     [[ $2 == --all ]] && set -- $1 ${(k)pf_map}
-    [[ $1 == apply ]] && sudo -v
+    if [[ $1 == apply ]] {  # only ask for sudo if a root pf is involved
+        local name own loc pat
+        for name in ${@:2}; for own loc pat in $=pf_map[$name]; do
+            [[ $own == root ]] && { sudo -v; break 2 }
+        done
+    }
     autoload -Uz zargs
     # FIXME: Weird 123 return code on macOS, could be a zargs bug.
     zargs -P0 -l1 -r -- ${@:2} -- _rsync-pf $1
